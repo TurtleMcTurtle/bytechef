@@ -56,6 +56,9 @@ Version: 1
     - tasks:write
     - teams:read
     - users:read
+    - webhooks:read
+    - webhooks:write
+    - webhooks:delete
     - workspaces:read
 13. Done 🚀.
 
@@ -446,6 +449,66 @@ To find the user ID of the assignee, click [here](/reference/components/asana_v1
 #### Find Tag IDs
 
 To find tag IDs, click [here](/reference/components/asana_v1#how-to-find-tags-id).
+
+
+
+
+## Triggers
+
+
+### New Task
+Name: newTask
+
+`Triggers when new task is created.`
+
+Type: DYNAMIC_WEBHOOK
+
+#### Properties
+
+|      Name       |      Label     |     Type     |     Description     | Required |
+|:---------------:|:--------------:|:------------:|:-------------------:|:--------:|
+| data | | OBJECT <details> <summary> Properties </summary> &#123;STRING\(workspace)&#125; </details> |  | null |
+| resource | Project | STRING <details> <summary> Depends On </summary> data.workspace </details> | The project to monitor for newly created tasks. | true |
+
+
+#### Output
+
+
+
+Type: OBJECT
+
+
+#### Properties
+
+|     Name     |     Type     |     Description     |
+|:------------:|:------------:|:-------------------:|
+| gid | STRING | Globally unique identifier of the task. |
+| name | STRING | Name of the task. |
+| resource_type | STRING | Type of the resource (task). |
+| created_at | STRING | Timestamp when the task was created. |
+| modified_at | STRING | Timestamp when the task was last modified. |
+| completed | STRING | Indicates whether the task is completed. |
+| notes | STRING | Description or notes of the task. |
+| assignee | OBJECT <details> <summary> Properties </summary> &#123;STRING\(gid), STRING\(name)&#125; </details> | User assigned to the task. |
+| project | OBJECT <details> <summary> Properties </summary> &#123;STRING\(gid), STRING\(name)&#125; </details> | Project the task belongs to. |
+
+
+
+
+#### JSON Example
+```json
+{
+  "label" : "New Task",
+  "name" : "newTask",
+  "parameters" : {
+    "data" : {
+      "workspace" : ""
+    },
+    "resource" : ""
+  },
+  "type" : "asana/v1/newTask"
+}
+```
 
 
 
